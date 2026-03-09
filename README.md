@@ -1,1 +1,45 @@
--Commerce Product REST API Implementation1. Project OverviewThis project involves the design and deployment of a scalable backend system for an e-commerce platform. Built with Django and Django REST Framework (DRF), the API facilitates product lifecycle management, secure user authentication, and advanced data retrieval through filtering and search functionality.2. Technical ArchitectureThe system utilizes a relational database structure managed via the Django ORM to ensure data integrity and optimized query performance.Data ModelsUser: Handles authentication and authorization using Django's built-in AbstractUser or standard User model.Category: A lookup table for organizing products, utilizing unique constraints and slugs for URL optimization.Product: The core entity containing attributes for name, description, price, stock quantity, and image URLs. It maintains a many-to-one relationship with the Category model.API Endpoint SpecificationMethodEndpointFunctionalityAuthorizationPOST/api/users/register/Account CreationNonePOST/api/token/Token Generation (JWT)NoneGET/api/products/Catalog RetrievalNonePOST/api/products/Product CreationAuthenticated StaffGET/api/products/<id>/Detailed Product ViewNonePATCH/api/products/<id>/Partial Data UpdateAuthenticated StaffDELETE/api/products/<id>/Product RemovalAuthenticated Staff3. Core Implementation Progress (Week 1)Project Initialization: Configured the virtual environment and installed core dependencies (DRF, SimpleJWT, Django-Filter).Schema Definition: Developed the Product and Category models within the products application.Database Management: Executed initial migrations and initialized the admin interface for data seeding.Security Configuration: Established the foundation for environment variable management to protect sensitive credentials.4. Challenges and Mitigation StrategiesRelational Integrity: Addressed potential orphaned data by implementing on_delete=models.CASCADE on the Product-Category relationship.Data Validation: Implemented field-level constraints in the models to prevent negative pricing or stock values, ensuring database-level consistency.Query Optimization: Identified potential N+1 query issues in the product list view; mitigated this by planning for .select_related() in the forthcoming ViewSets.5. Implementation Roadmap (Weeks 2-5)Week 2: Development of Serializers and ModelViewSets for core CRUD operations.Week 3: Integration of JWT-based authentication and custom permission classes.Week 4: Implementation of search filters (partial matches) and pagination logic.Week 5: Deployment to a production environment (PythonAnywhere/Heroku) and final documentation.
+# E-commerce Product REST API
+
+## Project Overview
+This repository contains a RESTful API designed to manage an e-commerce product catalog. The system is built using the Django framework and Django REST Framework (DRF), providing a scalable backend for product management, user authentication, and advanced data filtering.
+
+## Technical Specifications
+- **Framework**: Django 5.x
+- **API Engine**: Django REST Framework
+- **Authentication**: JWT (JSON Web Tokens) via SimpleJWT
+- **Database**: PostgreSQL (Production) / SQLite (Development)
+- **Data Filtering**: Django-filter
+
+## Functional Requirements
+- **Product Management**: Full CRUD operations for products and categories.
+- **User Management**: Registration and authentication for administrative access.
+- **Search Logic**: Partial name matching and description search functionality.
+- **Filtering**: Query parameters for category, price range, and stock availability.
+- **Pagination**: Standardized response limits for performance optimization.
+
+## API Documentation
+
+### Authentication Endpoints
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| POST | /api/token/ | Obtain access and refresh tokens |
+| POST | /api/token/refresh/ | Generate new access token |
+
+### Product Endpoints
+| Method | Endpoint | Access Control |
+| :--- | :--- | :--- |
+| GET | /api/products/ | Public |
+| POST | /api/products/ | Authenticated Staff Only |
+| GET | /api/products/<id>/ | Public |
+| PUT/PATCH | /api/products/<id>/ | Authenticated Staff Only |
+| DELETE | /api/products/<id>/ | Authenticated Staff Only |
+
+## Installation and Configuration
+
+### 1. Environment Setup
+Clone the repository and initialize the virtual environment:
+```bash
+git clone [https://github.com/AhmedFakhr999/e-commerce_back_end.git](https://github.com/AhmedFakhr999/e-commerce_back_end.git)
+cd e-commerce_back_end
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
