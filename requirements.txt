@@ -1,0 +1,18 @@
+# Core Framework
+django==5.0.0
+
+# API Development
+djangorestframework
+django-filter
+
+# Authentication and Security
+djangorestframework-simplejwt
+django-cors-headers
+
+# Production Utilities
+gunicorn
+whitenoise
+python-dotenv
+
+# Database (Optional: Add if using PostgreSQL in production)
+# psycopg2-binary

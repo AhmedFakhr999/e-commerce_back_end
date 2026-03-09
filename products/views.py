@@ -18,3 +18,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     }
     search_fields = ['name', 'description'] # Partial match requirement
     ordering_fields = ['price', 'created_date']
+    
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
