@@ -5,18 +5,22 @@ from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all().select_related('category') # Optimization: select_related avoids N+1
-    serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     
-    # Advanced Filtering and Search
+    queryset = Product.objects.all().select_related('category')
+    serializer_class = ProductSerializer
+    
+    # Enable Filtering, Search, and Ordering
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    # Exact match for category, range for price
     filterset_fields = {
         'category__name': ['exact'],
         'price': ['gte', 'lte'],
-        'stock_quantity': ['gt'], # Logic for "Stock Availability"
+        'stock_quantity': ['gt'], # Logic for "In Stock"
     }
-    search_fields = ['name', 'description'] # Partial match requirement
+    
+    # Partial match for Name and Description
+    search_fields = ['name', 'description']
     ordering_fields = ['price', 'created_date']
     
 
